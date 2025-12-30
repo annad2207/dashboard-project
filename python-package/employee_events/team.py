@@ -1,37 +1,42 @@
 # Import the QueryBase class
-# YOUR CODE HERE
+from query_base import QueryBase
 
 # Import dependencies for sql execution
-#### YOUR CODE HERE
+from sql_execution import QueryMixin
+import pandas as pd
 
 # Create a subclass of QueryBase
 # called  `Team`
-#### YOUR CODE HERE
+class Team(QueryBase, QueryMixin):
 
     # Set the class attribute `name`
     # to the string "team"
-    #### YOUR CODE HERE
+    name = "team"
 
 
     # Define a `names` method
     # that receives no arguments
     # This method should return
     # a list of tuples from an sql execution
-    #### YOUR CODE HERE
+    def names(self):
         
         # Query 5
         # Write an SQL query that selects
         # the team_name and team_id columns
         # from the team table for all teams
         # in the database
-        #### YOUR CODE HERE
+        sql = f"""
+            SELECT team_name, team_id
+            FROM {self.name}
+        """
+        return self.execute(sql)
     
 
     # Define a `username` method
     # that receives an ID argument
     # This method should return
     # a list of tuples from an sql execution
-    #### YOUR CODE HERE
+    def username(self, id):
 
         # Query 6
         # Write an SQL query
@@ -39,8 +44,12 @@
         # Use f-string formatting and a WHERE filter
         # to only return the team name related to
         # the ID argument
-        #### YOUR CODE HERE
-
+        sql = f"""
+             SELECT team_name
+             FROM {self.name}
+            WHERE employee_id = {id}
+        """
+        return self.execute(sql)
 
     # Below is method with an SQL query
     # This SQL query generates the data needed for
@@ -64,3 +73,4 @@
                     GROUP BY employee_id
                    )
                 """
+        return pd.read_sql(sql, self.connection)        
