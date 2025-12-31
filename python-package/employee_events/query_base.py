@@ -1,7 +1,7 @@
 # Import any dependencies needed to execute sql queries
 from sqlite3 import connect
 import pandas as pd
-from sql_execution import QueryMixin
+from .sql_execution import QueryMixin
 
 # Define a class called QueryBase
 # Use inheritance to add methods
@@ -40,15 +40,17 @@ class QueryBase(QueryMixin):
         # Compose SQL query using f-string and class attribute `name`
         sql_query = f"""
             SELECT 
-                event_date,
-                SUM(CASE WHEN event = 'positive' THEN 1 ELSE 0 END) AS positive_events,
-                SUM(CASE WHEN event = 'negative' THEN 1 ELSE 0 END) AS negative_events
-            FROM {self.name}
-            WHERE {self.name}.{id} IS NOT NULL
-            GROUP BY event_date
-            ORDER BY event_date
-        """        
+                ee.event_date,
+                SUM(ee.positive_events) AS positive_events,
+                SUM(ee.negative_events) AS negative_events
+            FROM employee_events ee
+            JOIN {self.name} e ON ee.employee_id = e.employee_id
+            WHERE ee.employee_id = {id}
+            GROUP BY ee.event_date
+            ORDER BY ee.event_date
+        """
         return self.pandas_query(sql_query)
+
 
     # Define a `notes` method that receives an id argument
     # This function should return a pandas dataframe

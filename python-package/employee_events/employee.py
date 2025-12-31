@@ -1,9 +1,9 @@
 # Import the QueryBase class
-from query_base import QueryBase
+from .query_base import QueryBase
 
 # Import dependencies needed for sql execution
 # from the `sql_execution` module
-from sql_execution import QueryMixin
+from .sql_execution import QueryMixin
 import pandas as pd
 
 # Define a subclass of QueryBase
@@ -32,7 +32,7 @@ class Employee(QueryBase, QueryMixin):
             SELECT first_name, employee_id
             FROM {self.name}
         """
-        return self.execute(sql)
+        return self.query(sql)
     
 
     # Define a method called `username`
@@ -52,7 +52,7 @@ class Employee(QueryBase, QueryMixin):
             FROM {self.name}
             WHERE employee_id = {id}
         """
-        return self.execute(sql)
+        return self.query(sql)
 
 
     # Below is method with an SQL query
@@ -62,7 +62,6 @@ class Employee(QueryBase, QueryMixin):
     # so when it is called, a pandas dataframe
     # is returns containing the execution of
     # the sql query
-    #### YOUR CODE HERE
     def model_data(self, id):
 
         return f"""

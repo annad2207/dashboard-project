@@ -22,7 +22,7 @@ def db_path():
 # with the same name as the function
 # the creates the "fixture" for
 # the database's filepath
-def test_db_exists(db_path)
+def test_db_exists(db_path):
     
     # using the pathlib `.is_file` method
     # assert that the sqlite database file exists
@@ -43,8 +43,7 @@ def table_names(db_conn):
 # `test_employee_table_exists`
 # This function should receive the `table_names`
 # fixture as an argument
-def test_employee_table_exists(table_names)
-
+def test_employee_table_exists(table_names):
     # Assert that the string 'employee'
     # is in the table_names list
     assert 'employee' in table_names, "'employee' table does not exist in this database"
