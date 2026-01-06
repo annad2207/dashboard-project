@@ -1,5 +1,5 @@
 # Import the QueryBase class
-from .query_base import QueryBase
+from employee_events.query_base import QueryBase
 
 # Import dependencies for sql execution
 from .sql_execution import QueryMixin
@@ -47,7 +47,7 @@ class Team(QueryBase, QueryMixin):
         sql = f"""
              SELECT team_name
              FROM {self.name}
-            WHERE employee_id = {id}
+            WHERE team_id = {id}
         """
         return self.query(sql)
 
@@ -61,7 +61,7 @@ class Team(QueryBase, QueryMixin):
 
     def model_data(self, id):
 
-        return f"""
+        query = f"""
             SELECT positive_events, negative_events FROM (
                     SELECT employee_id
                          , SUM(positive_events) positive_events
@@ -73,4 +73,4 @@ class Team(QueryBase, QueryMixin):
                     GROUP BY employee_id
                    )
                 """
-        return pd.read_sql(sql, self.connection)        
+        return self.pandas_query(query)      

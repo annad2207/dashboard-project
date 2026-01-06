@@ -39,21 +39,23 @@ class QueryBase(QueryMixin):
         # order by the event_date column
         # Compose SQL query using f-string and class attribute `name`
         sql_query = f"""
-            SELECT 
-                ee.event_date,
-                SUM(ee.positive_events) AS positive_events,
-                SUM(ee.negative_events) AS negative_events
-            FROM employee_events ee
-            JOIN {self.name} e ON ee.employee_id = e.employee_id
-            WHERE ee.employee_id = {id}
-            GROUP BY ee.event_date
-            ORDER BY ee.event_date
-        """
+            SELECT event_date,
+            SUM(positive_events) AS positive_events,
+            SUM(negative_events) AS negative_events
+            FROM {self.name}
+            JOIN employee_events USING({self.name}_id)
+            WHERE {self.name}.{self.name}_id = {id}
+            GROUP BY event_date
+            ORDER BY event_date
+                    """
         return self.pandas_query(sql_query)
+        
+        
 
 
     # Define a `notes` method that receives an id argument
     # This function should return a pandas dataframe
+
     def notes(self, id):
         """
         Returns a pandas DataFrame with note_date and note for the given id,
@@ -67,14 +69,13 @@ class QueryBase(QueryMixin):
         # with f-string formatting
         # so the query returns the notes
         # for the table name in the `name` class attribute
+        
         sql_query = f"""
-            SELECT notes.note_date, notes.note
-            FROM notes
-            JOIN {self.name} ON notes.{id} = {self.name}.{id}
-            WHERE {self.name}.{id} = ?
-            ORDER BY notes.note_date
-        """
-
-        with connect(db_path) as conn:
-            return pd.read_sql_query(sql_query, conn, params=(id,))
+                    SELECT note_date, note
+                    FROM notes
+                    JOIN {self.name} USING({self.name}_id)
+                    WHERE {self.name}.{self.name}_id = {id}
+                    ORDER BY note_date
+                    """
+        return self.pandas_query(sql_query)
 

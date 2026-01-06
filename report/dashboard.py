@@ -120,7 +120,7 @@ class LineChart(MatplotlibViz):
         ax.set_xlabel('Date')
         ax.set_ylabel('Count')
 
-#return fig?? 
+        return fig
 
 # Create a subclass of base_components/MatplotlibViz
 # called `BarChart`
@@ -140,36 +140,29 @@ class BarChart(MatplotlibViz):
         # to receive the data that can be passed to the machine
         # learning model
         data = model.model_data(entity_id)
-        data_array = data.values if hasattr(data, 'values') else data
-        if data_array.ndim == 0:
-        # Scalar value, reshape to (1, 1)
-            data_array = data_array.reshape(1, 1)
-        elif data_array.ndim == 1:
-        # 1D array, reshape to (1, n_features)
-            data_array = data_array.reshape(1, -1)
-
         
+
         # Using the predictor class attribute
         # pass the data to the `predict_proba` method
-        probs = self.predictor.predict_proba(data_array)
+        predict_proba = self.predictor.predict_proba(data)
         
         # Index the second column of predict_proba output
         # The shape should be (<number of records>, 1)
-        pred_probs = probs[:, 1]
+        pred = predict_proba[:, 1]
         
         
         # Below, create a `pred` variable set to
         # the number we want to visualize
-        #
+
         # If the model's name attribute is "team"
         # We want to visualize the mean of the predict_proba output
-        if model.name.lower() == "team":
-            pred = pred_probs.mean()
+        if model.name == "team":
+            pred = pred.mean()
         else:
             
         # Otherwise set `pred` to the first value
         # of the predict_proba output
-           pred = pred_probs[0]
+           pred = pred[0]
         
         # Initialize a matplotlib subplot
         fig, ax = plt.subplots()
@@ -182,9 +175,9 @@ class BarChart(MatplotlibViz):
         # pass the axis variable
         # to the `.set_axis_styling`
         # method
-        self.set_axis_styling(ax)
+        self.set_axis_styling(ax, bordercolor='black', fontcolor='black')
 
-       # return fig ??
+        return fig 
 
 
 
