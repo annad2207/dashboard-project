@@ -1,7 +1,7 @@
 # Import any dependencies needed to execute sql queries
 from sqlite3 import connect
 import pandas as pd
-from .sql_execution import QueryMixin
+from employee_events.sql_execution import QueryMixin
 
 # Define a class called QueryBase
 # Use inheritance to add methods

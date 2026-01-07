@@ -3,7 +3,7 @@ from employee_events.query_base import QueryBase
 
 # Import dependencies needed for sql execution
 # from the `sql_execution` module
-from .sql_execution import QueryMixin
+from employee_events.sql_execution import QueryMixin
 import pandas as pd
 
 # Define a subclass of QueryBase
