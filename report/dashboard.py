@@ -251,8 +251,8 @@ report = Report()
 
 # Create a route for a get request
 # Set the route's path to the root
-@app.get('/')
-def root_route(request):
+@app.route('/')
+def get():
 
 
     # Call the initialized report
@@ -268,8 +268,8 @@ def root_route(request):
 # an ID of `2`. 
 # parameterize the employee ID 
 # to a string datatype
-@app.get('/employee/{employee_id:str}')
-def employee_route(request, employee_id):
+@app.route("/employee/{employee_id}")
+def get(employee_id:str):
 
     # Call the initialized report
     # pass the ID and an instance
@@ -284,8 +284,8 @@ def employee_route(request, employee_id):
 # an ID of `2`. 
 # parameterize the team ID 
 # to a string datatype
-@app.get('/team/{team_id:str}')
-def team_route(request, team_id):
+@app.route("/team/{team_id}")
+def get(team_id:str):
 
     # Call the initialized report
     # pass the id and an instance
